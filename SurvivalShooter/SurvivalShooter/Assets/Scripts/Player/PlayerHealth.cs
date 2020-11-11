@@ -13,10 +13,11 @@ public class PlayerHealth : MonoBehaviour
     public AudioClip deathClip;
     public float flashSpeed = 5f;
     public Color flashColour = new Color(1f, 0f, 0f, 0.1f);
-
+    public float heartbeatHealthThreshold = 50f;
 
     Animator anim;
     AudioSource playerAudio;
+    AudioSource heartbeatAudio;
     PlayerMovement playerMovement;
     PlayerShooting playerShooting;
     bool isDead;
@@ -26,7 +27,10 @@ public class PlayerHealth : MonoBehaviour
     void Awake ()
     {
         anim = GetComponent <Animator> ();
-        playerAudio = GetComponent <AudioSource> ();
+        AudioSource[] clips = GetComponents<AudioSource>();
+        playerAudio = clips[0];
+        heartbeatAudio = clips[1];
+        heartbeatAudio.Stop();
         playerMovement = GetComponent <PlayerMovement> ();
         playerShooting = GetComponentInChildren <PlayerShooting> ();
         currentHealth = startingHealth;
@@ -54,6 +58,11 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= amount;
 
         healthSlider.value = currentHealth;
+
+        if (currentHealth < heartbeatHealthThreshold * startingHealth / 100f)
+        {
+            heartbeatAudio.Play();
+        }
 
         playerAudio.Play ();
 
