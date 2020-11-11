@@ -179,6 +179,8 @@ namespace VSCodeEditor
             {
                 var assemblies = m_AssemblyNameProvider.GetAssemblies(ShouldFileBePartOfSolution);
                 var allProjectAssemblies = RelevantAssembliesForMode(assemblies).ToList();
+                SyncSolution(allProjectAssemblies);
+
                 var allAssetProjectParts = GenerateAllAssetProjectParts();
 
                 var affectedNames = affectedFiles.Select(asset => m_AssemblyNameProvider.GetAssemblyNameFromScriptPath(asset)).Where(name => !string.IsNullOrWhiteSpace(name)).Select(name => name.Split(new [] {".dll"}, StringSplitOptions.RemoveEmptyEntries)[0]);
@@ -230,13 +232,18 @@ namespace VSCodeEditor
 
         bool ShouldFileBePartOfSolution(string file)
         {
-            string extension = Path.GetExtension(file);
-
             // Exclude files coming from packages except if they are internalized.
             if (m_AssemblyNameProvider.IsInternalizedPackagePath(file))
             {
                 return false;
             }
+
+            return HasValidExtension(file);
+        }
+
+        bool HasValidExtension(string file)
+        {
+            string extension = Path.GetExtension(file);
 
             // Dll's are not scripts but still need to be included..
             if (extension == ".dll")
@@ -423,7 +430,7 @@ namespace VSCodeEditor
 
             foreach (string file in assembly.sourceFiles)
             {
-                if (!ShouldFileBePartOfSolution(file))
+                if (!HasValidExtension(file))
                     continue;
 
                 var extension = Path.GetExtension(file).ToLower();
