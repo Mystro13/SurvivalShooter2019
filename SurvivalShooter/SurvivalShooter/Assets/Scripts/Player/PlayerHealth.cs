@@ -63,6 +63,10 @@ public class PlayerHealth : MonoBehaviour
         {
             heartbeatAudio.Play();
         }
+        else
+        {
+            heartbeatAudio.Stop();
+        }
 
         playerAudio.Play ();
 
@@ -83,7 +87,7 @@ public class PlayerHealth : MonoBehaviour
 
         playerAudio.clip = deathClip;
         playerAudio.Play ();
-
+        heartbeatAudio.Stop();
         playerMovement.enabled = false;
         playerShooting.enabled = false;
     }

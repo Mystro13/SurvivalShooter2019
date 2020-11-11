@@ -1,13 +1,16 @@
-﻿using UnityEngine;
-
+﻿using System;
+using System.Diagnostics;
+using System.Reflection;
+using UnityEngine;
+using UnityEngine.UI;
 public class EnemyHealth : MonoBehaviour
 {
-    public int startingHealth = 100;
+    public int startingHealth = 100f;
     public int currentHealth;
     public float sinkSpeed = 2.5f;
     public int scoreValue = 10;
     public AudioClip deathClip;
-
+    public Image enemyHealth;
 
     Animator anim;
     AudioSource enemyAudio;
@@ -23,7 +26,7 @@ public class EnemyHealth : MonoBehaviour
         enemyAudio = GetComponent <AudioSource> ();
         hitParticles = GetComponentInChildren <ParticleSystem> ();
         capsuleCollider = GetComponent <CapsuleCollider> ();
-
+        
         currentHealth = startingHealth;
     }
 
@@ -34,6 +37,7 @@ public class EnemyHealth : MonoBehaviour
         {
             transform.Translate (-Vector3.up * sinkSpeed * Time.deltaTime);
         }
+
     }
 
 
@@ -45,7 +49,9 @@ public class EnemyHealth : MonoBehaviour
         enemyAudio.Play ();
 
         currentHealth -= amount;
-            
+        //float maxHealth = startingHealth/1.0f;
+        //enemyHealth.fillAmount = currentHealth/ 100f;
+        Debug.Log($"enemy health {currentHealth}");
         hitParticles.transform.position = hitPoint;
         hitParticles.Play();
 
