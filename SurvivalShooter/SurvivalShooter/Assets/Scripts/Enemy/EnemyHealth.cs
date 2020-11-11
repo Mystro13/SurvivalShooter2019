@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class EnemyHealth : MonoBehaviour
 {
-    public int startingHealth = 100f;
+    public int startingHealth = 100;
     public int currentHealth;
     public float sinkSpeed = 2.5f;
     public int scoreValue = 10;
@@ -49,9 +49,9 @@ public class EnemyHealth : MonoBehaviour
         enemyAudio.Play ();
 
         currentHealth -= amount;
-        //float maxHealth = startingHealth/1.0f;
-        //enemyHealth.fillAmount = currentHealth/ 100f;
-        Debug.Log($"enemy health {currentHealth}");
+        float maxHealth = (float)startingHealth;
+        enemyHealth.fillAmount = currentHealth/ maxHealth;
+        //Debug.Log($"enemy health {currentHealth}");
         hitParticles.transform.position = hitPoint;
         hitParticles.Play();
 
