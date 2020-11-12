@@ -18,8 +18,9 @@ public class EnemyHealth : MonoBehaviour
     CapsuleCollider capsuleCollider;
     bool isDead;
     bool isSinking;
-
-
+    public float flashSpeed = 5f;
+    public Color flashColor = new Color(.5f, .5f, .5f, 0.1f);
+    Color enemyColor;
     void Awake ()
     {
         anim = GetComponent <Animator> ();
@@ -28,6 +29,7 @@ public class EnemyHealth : MonoBehaviour
         capsuleCollider = GetComponent <CapsuleCollider> ();
         
         currentHealth = startingHealth;
+        //enemyColor = capsuleCollider.material.color;
     }
 
 
@@ -41,7 +43,7 @@ public class EnemyHealth : MonoBehaviour
     }
 
 
-    public void TakeDamage (int amount, Vector3 hitPoint)
+    public void TakeDamage (int amount, Vector3 hitPoint, Vector3 hitDirection)
     {
         if(isDead)
             return;
@@ -51,13 +53,20 @@ public class EnemyHealth : MonoBehaviour
         currentHealth -= amount;
         float maxHealth = (float)startingHealth;
         enemyHealth.fillAmount = currentHealth/ maxHealth;
-        //Debug.Log($"enemy health {currentHealth}");
+   
         hitParticles.transform.position = hitPoint;
         hitParticles.Play();
 
+        
+
         if(currentHealth <= 0)
         {
+            gameObject.transform.position += 2.0f * hitDirection;
             Death ();
+        }
+        else
+        {
+           // gameObject.renderer.material.color = Color.Lerp(flashColor, enemyColor, flashSpeed * Time.deltaTime);
         }
     }
 
@@ -67,11 +76,11 @@ public class EnemyHealth : MonoBehaviour
         isDead = true;
 
         capsuleCollider.isTrigger = true;
-
         anim.SetTrigger ("Dead");
 
         enemyAudio.clip = deathClip;
         enemyAudio.Play ();
+        
     }
 
 

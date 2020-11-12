@@ -20,9 +20,11 @@ public class PlayerHealth : MonoBehaviour
     AudioSource heartbeatAudio;
     PlayerMovement playerMovement;
     PlayerShooting playerShooting;
+  
+
     bool isDead;
     bool damaged;
-
+    int startDelay;
 
     void Awake ()
     {
@@ -67,10 +69,10 @@ public class PlayerHealth : MonoBehaviour
         {
             heartbeatAudio.Stop();
         }
-
+        Camera.main.SendMessage("DoShake");
         playerAudio.Play ();
 
-        if(currentHealth <= 0 && !isDead)
+        if (currentHealth <= 0 && !isDead)
         {
             Death ();
         }
@@ -80,9 +82,9 @@ public class PlayerHealth : MonoBehaviour
     void Death ()
     {
         isDead = true;
-
+        startDelay = 5;//animation delay
         playerShooting.DisableEffects ();
-
+        new WaitForSeconds(startDelay);
         anim.SetTrigger ("Die");
 
         playerAudio.clip = deathClip;

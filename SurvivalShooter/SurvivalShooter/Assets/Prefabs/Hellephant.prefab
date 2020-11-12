@@ -318,7 +318,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -371,7 +371,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeZ:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -9975,6 +9975,8 @@ MonoBehaviour:
   scoreValue: 50
   deathClip: {fileID: 8300000, guid: 8c615fd0429f34edf85539d70279360d, type: 3}
   enemyHealth: {fileID: 1455080839590375393}
+  flashSpeed: 5
+  flashColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.1}
 --- !u!114 &114290231285748624
 MonoBehaviour:
   m_ObjectHideFlags: 0
